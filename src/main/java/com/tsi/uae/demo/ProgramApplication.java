@@ -34,7 +34,7 @@ public class ProgramApplication {
 		return actorRepository.findById(Id);
 	}
 	@PostMapping("/Add")
-	public Boolean addActor(@RequestParam String first_name, @RequestParam String last_name){
+	public Boolean addActor(@RequestParam String first_name,  String last_name){
 
 		Actor a = new Actor(first_name,last_name);
 
