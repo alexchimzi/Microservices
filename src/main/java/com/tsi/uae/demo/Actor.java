@@ -11,16 +11,31 @@ import javax.persistence.GenerationType;
 import java.util.Optional;
 
 @Entity
-@Qualifier
 @Table(name = "actor")
 @Repository
-public class Actor implements ActorRepository {
+public class Actor {
 
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY )
     private int actor_id;
 
+
+    public String getFirst_name() {
+        return first_name;
+    }
+
+    public void setFirst_name(String first_name) {
+        this.first_name = first_name;
+    }
+
+    public String getLast_name() {
+        return last_name;
+    }
+
+    public void setLast_name(String last_name) {
+        this.last_name = last_name;
+    }
 
     //Attributes
     private String first_name;
@@ -42,63 +57,14 @@ public class Actor implements ActorRepository {
     }
 
 
-    @Override
-    public <S extends Actor> S save(S entity) {
-        return null;
-    }
+
 
     @Override
-    public <S extends Actor> Iterable<S> saveAll(Iterable<S> entities) {
-        return null;
-    }
-
-    @Override
-    public Optional<Actor> findById(Integer integer) {
-        return Optional.empty();
-    }
-
-    @Override
-    public boolean existsById(Integer integer) {
-        return false;
-    }
-
-    @Override
-    public Iterable<Actor> findAll() {
-        return null;
-    }
-
-    @Override
-    public Iterable<Actor> findAllById(Iterable<Integer> integers) {
-        return null;
-    }
-
-    @Override
-    public long count() {
-        return 0;
-    }
-
-    @Override
-    public void deleteById(Integer integer) {
-
-    }
-
-    @Override
-    public void delete(Actor entity) {
-
-    }
-
-    @Override
-    public void deleteAllById(Iterable<? extends Integer> integers) {
-
-    }
-
-    @Override
-    public void deleteAll(Iterable<? extends Actor> entities) {
-
-    }
-
-    @Override
-    public void deleteAll() {
-
+    public String toString() {
+        return "Actor{" +
+                "actor_id=" + actor_id +
+                ", first_name='" + first_name + '\'' +
+                ", last_name='" + last_name + '\'' +
+                '}';
     }
 }
