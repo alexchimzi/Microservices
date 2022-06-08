@@ -1,6 +1,5 @@
 package com.tsi.uae.demo;
 
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 import org.springframework.stereotype.Repository;
@@ -8,7 +7,6 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
-import java.util.Optional;
 
 @Entity
 @Table(name = "actor")
@@ -41,9 +39,6 @@ public class Actor {
     private String first_name;
     private String last_name;
 
-    //@ManyToMany(mappedBy = "actor", fetch = FetchType.LAZY)
-    //@JasonIgnore
-    //private Set<Film> film = new HashSet<>();
 
 
     public Actor(String first_name, String last_name){

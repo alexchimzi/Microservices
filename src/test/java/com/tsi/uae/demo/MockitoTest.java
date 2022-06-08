@@ -2,7 +2,6 @@ package com.tsi.uae.demo;
 
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,7 +17,7 @@ import static org.mockito.Mockito.verify;
 @ExtendWith(MockitoExtension.class)
 public class MockitoTest {
 
-    private ProgramApplication programApplication;
+    private MicroserviceApplication microserviceApplication;
 
     @Mock
     private ActorRepository actorRepository;
@@ -26,13 +25,13 @@ public class MockitoTest {
 
     @BeforeEach
     void setup(){
-        programApplication = new ProgramApplication(actorRepository);
+        microserviceApplication = new MicroserviceApplication(actorRepository);
     }
 
     @Test
     public void canGetAllActors()
     {
-        programApplication.getAllActors();
+        microserviceApplication.getAllActors();
         verify(actorRepository).findAll();
     }
     @Test
@@ -40,8 +39,8 @@ public class MockitoTest {
     {
 
         Actor actor = new Actor("TEST", "TESTING");
-        Mockito.when(programApplication.getActorId(1)).thenReturn(Optional.of(actor));
-        Optional<Actor> a = programApplication.getActorId(1);
+        Mockito.when(microserviceApplication.getActorId(1)).thenReturn(Optional.of(actor));
+        Optional<Actor> a = microserviceApplication.getActorId(1);
 
         Assertions.assertEquals("TEST",a.get().getFirst_name());
         Assertions.assertEquals("TESTING",a.get().getLast_name());
@@ -49,7 +48,7 @@ public class MockitoTest {
     @Test
     public void canAddActor()
     {
-        programApplication.addActor("alex","ben");
+        microserviceApplication.addActor("alex","ben");
         ArgumentCaptor<Actor> actorArgumentCaptor
                  = ArgumentCaptor.forClass(Actor.class);
 
@@ -62,27 +61,28 @@ public class MockitoTest {
     public void canUpdateActor()
     {
         Actor actor = new Actor("TEST", "TESTING");
-        Mockito.when(programApplication.getActorId(1)).thenReturn(Optional.of(actor));
-        programApplication.updateActorById(1,"TESTING","TEST");
-        Actor a = programApplication.getActorId(1).orElseThrow();
+        Mockito.when(microserviceApplication.getActorId(1)).thenReturn(Optional.of(actor));
+        microserviceApplication.updateActorById(1,"TESTING","TEST");
+        Actor a = microserviceApplication.getActorId(1).orElseThrow();
         Assertions.assertEquals(a.getFirst_name(),"TESTING","Incorrect First Name");
         Assertions.assertEquals(a.getLast_name(),"TEST","Incorrect Last Name");
 
     }
 
     @Test
-    @Disabled
+    //@Disabled
     public void canDeleteActor()
     {
+        Boolean de = Boolean.FALSE;
         Actor actor = new Actor("TEST", "TESTING");
-        //programApplication.addActor("TEST", "TESTING");
-        Mockito.when(programApplication.getActorId(1)).thenReturn(Optional.of(actor));
-        programApplication.removeActorById(1);
-        ArgumentCaptor<Integer> actorArgumentCaptor
-            = ArgumentCaptor.forClass(Integer.class);
+        microserviceApplication.addActor(actor.getFirst_name(),actor.getLast_name());
+        Mockito.when(microserviceApplication.removeActorById(1)).thenReturn(de);
+        //System.out.println(programApplication.getActorId(1).orElseThrow().getFirst_name());
+        //programApplication.removeActorById(1);
+        //verify(actorRepository).existsById(1);
 
-        verify(actorRepository).deleteById(actorArgumentCaptor.capture());
-        Assertions.assertEquals(actorArgumentCaptor.getValue(),1,"Delete test failed");
-        //Assertions.assertTrue();
+
+
+        //Assertions.assertTrue(de);
     }
 }

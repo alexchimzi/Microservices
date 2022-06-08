@@ -4,24 +4,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
 import java.util.Optional;
 
 @SpringBootApplication
 @RestController
 @RequestMapping("/Home")
-public class ProgramApplication {
+public class MicroserviceApplication {
 	@Autowired
 	private ActorRepository actorRepository;
 
 	public static void main(String[] args) {
-		SpringApplication.run(ProgramApplication.class, args);
+		SpringApplication.run(MicroserviceApplication.class, args);
 	}
 
-	public ProgramApplication( ActorRepository actorRepository){
+	public MicroserviceApplication(ActorRepository actorRepository){
 		this.actorRepository = actorRepository;
 	}
 	@GetMapping("/Get_All")
