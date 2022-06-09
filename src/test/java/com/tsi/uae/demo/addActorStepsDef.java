@@ -23,6 +23,8 @@ public class addActorStepsDef {
     }
     MicroserviceApplication pa;
     ActorRepository actorRepository;
+    CountryRepository countryRepository;
+    CityRepository cityRepository;
     ArgumentCaptor<Actor> argumentCaptor;
     String actualFirstName;
     String actualLastName;
@@ -31,7 +33,7 @@ public class addActorStepsDef {
         // Write code here that turns the phrase above into concrete actions
         argumentCaptor = ArgumentCaptor.forClass(Actor.class);
         actorRepository = mock(ActorRepository.class);
-        pa = new MicroserviceApplication(actorRepository);
+        pa = new MicroserviceApplication(actorRepository,cityRepository,countryRepository);
         pa.addActor(first_name,last_name);
         verify(actorRepository).save(argumentCaptor.capture());
         actualFirstName = argumentCaptor.getValue().getFirst_name();

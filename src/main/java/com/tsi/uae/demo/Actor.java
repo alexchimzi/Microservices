@@ -14,6 +14,14 @@ import javax.persistence.GenerationType;
 public class Actor {
 
 
+    public int getActor_id() {
+        return actor_id;
+    }
+
+    public void setActor_id(int actor_id) {
+        this.actor_id = actor_id;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY )
     private int actor_id;
@@ -46,6 +54,7 @@ public class Actor {
         this.last_name = last_name;
 
     }
+
 
     public Actor(){
 
