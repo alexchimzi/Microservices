@@ -14,13 +14,6 @@ public class addActorStepsDef {
     Actor actor;
     String first_name;
     String last_name;
-
-    @Given("I have the actors information")
-    public void i_have_the_actors_information() {
-        // Write code here that turns the phrase above into concrete actions
-        first_name = "Testing";
-        last_name = "Test";
-    }
     MicroserviceApplication pa;
     ActorRepository actorRepository;
     CountryRepository countryRepository;
@@ -28,6 +21,14 @@ public class addActorStepsDef {
     ArgumentCaptor<Actor> argumentCaptor;
     String actualFirstName;
     String actualLastName;
+
+    @Given("I have the actors information")
+    public void i_have_the_actors_information() {
+        // Write code here that turns the phrase above into concrete actions
+        first_name = "Testing";
+        last_name = "Test";
+    }
+
     @When("I input the data into the database")
     public void i_input_the_data_into_the_database() {
         // Write code here that turns the phrase above into concrete actions

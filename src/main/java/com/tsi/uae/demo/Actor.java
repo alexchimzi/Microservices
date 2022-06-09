@@ -54,6 +54,12 @@ public class Actor {
         this.last_name = last_name;
 
     }
+    public Actor(int Id, String first_name, String last_name){
+        this.first_name = first_name;
+        this.last_name = last_name;
+        this.actor_id = Id;
+
+    }
 
 
     public Actor(){
