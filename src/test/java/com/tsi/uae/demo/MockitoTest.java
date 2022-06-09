@@ -159,11 +159,14 @@ public class MockitoTest {
     public void canGetCountryById()
     {
 
-        Country country = new Country("TESTING");
+        Country country = new Country();
+        country.setCountry("TESTING");
+        country.setCountry_id(1);
         Mockito.when(microserviceApplication.getCountryById(1)).thenReturn(Optional.of(country));
         Optional<Country> c = microserviceApplication.getCountryById(1);
 
         Assertions.assertEquals("TESTING",c.get().getCountry());
+        Assertions.assertEquals(1,c.get().getCountry_id());
     }
     @Test
     public void canAddCountry()
