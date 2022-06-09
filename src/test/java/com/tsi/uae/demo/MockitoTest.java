@@ -43,7 +43,7 @@ public class MockitoTest {
     public void canGetActorsById()
     {
 
-        Actor actor = new Actor("TEST", "TESTING");
+        Actor actor = new Actor(1,"TEST", "TESTING");
         Mockito.when(microserviceApplication.getActorId(1)).thenReturn(Optional.of(actor));
         Optional<Actor> a = microserviceApplication.getActorId(1);
 
@@ -65,7 +65,10 @@ public class MockitoTest {
     @Test
     public void canUpdateActor()
     {
-        Actor actor = new Actor("TEST", "TESTING");
+        Actor actor = new Actor();
+        actor.setActor_id(1);
+        actor.setFirst_name("TESTING");
+        actor.setLast_name("TEST");
         Mockito.when(microserviceApplication.getActorId(1)).thenReturn(Optional.of(actor));
         microserviceApplication.updateActorById(1,"TESTING","TEST");
         Actor a = microserviceApplication.getActorId(1).orElseThrow();
@@ -182,7 +185,7 @@ public class MockitoTest {
     @Test
     public void canUpdateCountry()
     {
-        Country country = new Country("TEST");
+        Country country = new Country(1,"TEST");
         Mockito.when(microserviceApplication.getCountryById(1)).thenReturn(Optional.of(country));
         microserviceApplication.updateCountryById(1,"TESTING");
         Country c = microserviceApplication.getCountryById(1).orElseThrow();
