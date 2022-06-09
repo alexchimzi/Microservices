@@ -99,12 +99,19 @@ public class MockitoTest {
     public void canGetCityById()
     {
 
-        City city = new City("TESTING");
+        City city = new City();
+        city.setCity("TESTING");
+        city.setCity_id(1);
+        city.setCountry_id(1);
+
         Mockito.when(microserviceApplication.getCityId(1)).thenReturn(Optional.of(city));
         Optional<City> c = microserviceApplication.getCityId(1);
 
         Assertions.assertEquals("TESTING",c.get().getCity());
+        Assertions.assertEquals(1,c.get().getCity_id());
+        Assertions.assertEquals(1,c.get().getCountry_id());
     }
+
     @Test
     public void canAddCity()
     {
@@ -119,7 +126,7 @@ public class MockitoTest {
     @Test
     public void canUpdateCity()
     {
-        City city = new City("TEST");
+        City city = new City(1,"TEST",1);
         Mockito.when(microserviceApplication.getCityId(1)).thenReturn(Optional.of(city));
         microserviceApplication.updateCityById(1,"TESTING");
         City c = microserviceApplication.getCityId(1).orElseThrow();
