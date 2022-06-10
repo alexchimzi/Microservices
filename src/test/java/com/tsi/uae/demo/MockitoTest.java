@@ -27,10 +27,14 @@ public class MockitoTest {
     @Mock
     private CityRepository cityRepository;
 
+    @Mock
+    private AddressRepository addressRepository;
+
 
     @BeforeEach
     void setup(){
-        microserviceApplication = new MicroserviceApplication(actorRepository,cityRepository,countryRepository);
+        microserviceApplication = new MicroserviceApplication(actorRepository,cityRepository,
+                countryRepository,addressRepository);
     }
 
     @Test
@@ -204,6 +208,85 @@ public class MockitoTest {
         countryRepository.deleteById(1);
         verify(countryRepository).deleteById(1);
         Assertions.assertTrue(microserviceApplication.removeCountryById(1));
+
+    }
+
+    //Address Tests
+    @Test
+    public void canGetAllAddress()
+    {
+        microserviceApplication.getAllAddress();
+        verify(addressRepository).findAll();
+    }
+    @Test
+    public void canGetAddressById()
+    {
+
+        Address address = new Address();
+        address.setAddress("TESTING");
+        address.setAddress2("TESTING 2");
+        address.setPhone(123456789);
+        address.setPostal_code(12345);
+        address.setCity_id(123);
+        address.setLocation(null);
+        address.setDistrict("TESTING 3");
+
+        address.setAddress_id(1);
+        Mockito.when(microserviceApplication.getAddressById(1)).thenReturn(Optional.of(address));
+        Optional<Address> a = microserviceApplication.getAddressById(1);
+
+        Assertions.assertEquals("TESTING",a.get().getAddress());
+        Assertions.assertEquals(1,a.get().getAddress_id());
+        Assertions.assertEquals("TESTING 2",a.get().getAddress2());
+        Assertions.assertEquals(123456789,a.get().getPhone());
+        Assertions.assertEquals(12345,a.get().getPostal_code());
+        Assertions.assertEquals(123,a.get().getCity_id());
+        Assertions.assertEquals(null,a.get().getLocation());
+        Assertions.assertEquals("TESTING 3",a.get().getDistrict());
+
+    }
+    @Test
+    public void canAddAddress()
+    {
+        microserviceApplication.addAddress(1,"TESTING");
+        ArgumentCaptor<Address> addressArgumentCaptor
+                = ArgumentCaptor.forClass(Address.class);
+
+        verify(addressRepository).save(addressArgumentCaptor.capture());
+        Address a = addressArgumentCaptor.getValue();
+        Assertions.assertEquals(a.getAddress(),"TESTING","Incorrect Name");
+    }
+    @Test
+    public void canUpdateAddress()
+    {
+        Address address = new Address(1,"TEST",890,67890);
+        Mockito.when(microserviceApplication.getAddressById(1)).thenReturn(Optional.of(address));
+        microserviceApplication.updateAddressById(1,"TESTING","TESTING 2","TESTING 3",
+                123,12345,123456789,null);
+        Address a = microserviceApplication.getAddressById(1).orElseThrow();
+
+        Assertions.assertEquals("TESTING",a.getAddress());
+        Assertions.assertEquals(1,a.getAddress_id());
+        Assertions.assertEquals("TESTING 2",a.getAddress2());
+        Assertions.assertEquals(123456789,a.getPhone());
+        Assertions.assertEquals(12345,a.getPostal_code());
+        Assertions.assertEquals(123,a.getCity_id());
+        Assertions.assertEquals(null,a.getLocation());
+        Assertions.assertEquals("TESTING 3",a.getDistrict());
+
+
+    }
+
+    @Test
+    public void canDeleteAddress()
+    {
+        Address a = new Address(1,"TEST");
+
+        Optional<Address> optionalAddress = Optional.of(a);
+        Mockito.when(addressRepository.findById(1)).thenReturn(optionalAddress);
+        addressRepository.deleteById(1);
+        verify(addressRepository).deleteById(1);
+        Assertions.assertTrue(microserviceApplication.removeAddressById(1));
 
     }
 }

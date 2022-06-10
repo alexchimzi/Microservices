@@ -20,6 +20,7 @@ public class removeActorStepDef {
     ActorRepository actorRepository;
     CountryRepository countryRepository;
     CityRepository cityRepository;
+    AddressRepository addressRepository;
 
     @Given("I have the actors ID")
     public void i_have_the_actors_id() {
@@ -29,7 +30,8 @@ public class removeActorStepDef {
     public void i_remove_user_from_the_database() {
         //argumentCaptor = ArgumentCaptor.forClass(Actor.class);
         actorRepository = mock(ActorRepository.class);
-        pa = new MicroserviceApplication(actorRepository,cityRepository,countryRepository);
+        pa = new MicroserviceApplication(actorRepository,cityRepository,
+                countryRepository,addressRepository);
         Actor c = new Actor(first_name,last_name);
         Optional<Actor> optionalActor = Optional.of(c);
         Mockito.when(actorRepository.findById(1)).thenReturn(optionalActor);
