@@ -5,9 +5,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "city")
@@ -19,13 +17,14 @@ public class City {
     private int city_id;
 
     private String city;
+    @ManyToOne
+    @JoinColumn(name="country_id")
+    Country country;
 
-    private int country_id;
-
-    public City(int city_id, String city, int country_id) {
+    public City(int city_id, String city, Country country) {
         this.city_id = city_id;
         this.city = city;
-        this.country_id = country_id;
+        this.country = country;
     }
     public City(String city) {
 
@@ -52,12 +51,12 @@ public class City {
         this.city = city;
     }
 
-    public int getCountry_id() {
-        return country_id;
+    public Country getCountry() {
+        return country;
     }
 
-    public void setCountry_id(int country_id) {
-        this.country_id = country_id;
+    public void setCountry(Country country) {
+        this.country = country;
     }
 
     @Override
@@ -65,7 +64,7 @@ public class City {
         return "City{" +
                 "city_id=" + city_id +
                 ", city='" + city + '\'' +
-                ", country_id=" + country_id +
+                ", country_id=" + country.getCountry_id() +
                 '}';
     }
 }

@@ -188,7 +188,7 @@ public class MicroserviceApplication {
 		a.setAddress(address);
 		a.setAddress2(address2);
 		a.setDistrict(district);
-		a.setCity_id(city_id);
+		a.getCity().setCity_id(city_id);
 		a.setPostal_code(postal_code);
 		a.setPhone(phone);
 		a.setLocation(location);

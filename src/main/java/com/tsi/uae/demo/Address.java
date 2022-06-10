@@ -5,9 +5,7 @@ import org.springframework.data.relational.core.mapping.Table;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
+import javax.persistence.*;
 import java.sql.Blob;
 
 @Entity
@@ -24,8 +22,9 @@ public class Address {
     private String address2;
 
     private  String district;
-
-    private int city_id;
+    @ManyToOne
+    @JoinColumn(name = "city_id")
+    private City city;
     private int postal_code;
     @Nullable
     private int phone;
@@ -35,10 +34,10 @@ public class Address {
     public Address() {
     }
 
-    public Address(int address_id, String address, int city_id, int postal_code) {
+    public Address(int address_id, String address, City city, int postal_code) {
         this.address_id = address_id;
         this.address = address;
-        this.city_id = city_id;
+        this.city = city;
         this.postal_code = postal_code;
     }
 
@@ -80,12 +79,12 @@ public class Address {
         this.district = district;
     }
 
-    public int getCity_id() {
-        return city_id;
+    public City getCity() {
+        return city;
     }
 
-    public void setCity_id(int city_id) {
-        this.city_id = city_id;
+    public void setCity(City city) {
+        this.city = city;
     }
 
     public int getPostal_code() {
@@ -120,7 +119,7 @@ public class Address {
                 ", address='" + address + '\'' +
                 ", address2='" + address2 + '\'' +
                 ", district='" + district + '\'' +
-                ", city_id=" + city_id +
+                ", city_id=" + city.getCity() +
                 ", postal_code=" + postal_code +
                 ", phone=" + phone +
                 ", location=" + location +

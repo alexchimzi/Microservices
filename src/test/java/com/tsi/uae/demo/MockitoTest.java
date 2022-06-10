@@ -107,16 +107,17 @@ public class MockitoTest {
     {
 
         City city = new City();
+        Country countryTest = new Country(1,"Country Test");
         city.setCity("TESTING");
         city.setCity_id(1);
-        city.setCountry_id(1);
+        city.setCountry(countryTest);
 
         Mockito.when(microserviceApplication.getCityId(1)).thenReturn(Optional.of(city));
         Optional<City> c = microserviceApplication.getCityId(1);
 
         Assertions.assertEquals("TESTING",c.get().getCity());
         Assertions.assertEquals(1,c.get().getCity_id());
-        Assertions.assertEquals(1,c.get().getCountry_id());
+        Assertions.assertEquals(1,c.get().getCountry().getCountry_id());
     }
 
     @Test
@@ -133,7 +134,10 @@ public class MockitoTest {
     @Test
     public void canUpdateCity()
     {
-        City city = new City(1,"TEST",1);
+        Country con = new Country(1,"Testing Country");
+
+        City city = new City(1,"TEST",con);
+        //city.setCountry_id(con);
         Mockito.when(microserviceApplication.getCityId(1)).thenReturn(Optional.of(city));
         microserviceApplication.updateCityById(1,"TESTING");
         City c = microserviceApplication.getCityId(1).orElseThrow();
@@ -223,11 +227,15 @@ public class MockitoTest {
     {
 
         Address address = new Address();
+        Country con = new Country(1,"TEST COUNTRY");
+        City city = new City(1,"TEST CITY",con);
+        address.setCity(city);
+
         address.setAddress("TESTING");
         address.setAddress2("TESTING 2");
         address.setPhone(123456789);
         address.setPostal_code(12345);
-        address.setCity_id(123);
+        address.getCity().setCity_id(123);
         address.setLocation(null);
         address.setDistrict("TESTING 3");
 
@@ -240,8 +248,8 @@ public class MockitoTest {
         Assertions.assertEquals("TESTING 2",a.get().getAddress2());
         Assertions.assertEquals(123456789,a.get().getPhone());
         Assertions.assertEquals(12345,a.get().getPostal_code());
-        Assertions.assertEquals(123,a.get().getCity_id());
-        Assertions.assertEquals(null,a.get().getLocation());
+        Assertions.assertEquals(123,a.get().getCity().getCity_id());
+        Assertions.assertNull(a.get().getLocation());
         Assertions.assertEquals("TESTING 3",a.get().getDistrict());
 
     }
@@ -259,7 +267,8 @@ public class MockitoTest {
     @Test
     public void canUpdateAddress()
     {
-        Address address = new Address(1,"TEST",890,67890);
+        City city = new City("TEST");
+        Address address = new Address(1,"TEST",city,67890);
         Mockito.when(microserviceApplication.getAddressById(1)).thenReturn(Optional.of(address));
         microserviceApplication.updateAddressById(1,"TESTING","TESTING 2","TESTING 3",
                 123,12345,123456789,null);
@@ -270,7 +279,7 @@ public class MockitoTest {
         Assertions.assertEquals("TESTING 2",a.getAddress2());
         Assertions.assertEquals(123456789,a.getPhone());
         Assertions.assertEquals(12345,a.getPostal_code());
-        Assertions.assertEquals(123,a.getCity_id());
+        Assertions.assertEquals(123,a.getCity().getCity_id());
         Assertions.assertEquals(null,a.getLocation());
         Assertions.assertEquals("TESTING 3",a.getDistrict());
 
