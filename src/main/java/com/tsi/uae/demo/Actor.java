@@ -1,14 +1,15 @@
 package com.tsi.uae.demo;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.Embedded;
-import org.springframework.data.relational.core.mapping.Table;
+//import org.springframework.data.relational.core.mapping.Embedded;
+//import org.springframework.data.relational.core.mapping.Table;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
+import javax.persistence.Table;
 import java.sql.Blob;
 
 @Entity
@@ -24,7 +25,7 @@ public class Actor {
     public void setActor_id(int actor_id) {
         this.actor_id = actor_id;
     }
-
+    @javax.persistence.Id
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY )
     private int actor_id;

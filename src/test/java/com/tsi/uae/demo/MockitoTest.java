@@ -1,6 +1,8 @@
 package com.tsi.uae.demo;
 
 
+import com.mysql.cj.exceptions.ExceptionInterceptor;
+import com.mysql.cj.jdbc.Blob;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -225,7 +227,7 @@ public class MockitoTest {
     @Test
     public void canGetAddressById()
     {
-
+       
         Address address = new Address();
         Country con = new Country(1,"TEST COUNTRY");
         City city = new City(1,"TEST CITY",con);

@@ -2,18 +2,20 @@ package com.tsi.uae.demo;
 
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.Table;
+//import org.springframework.data.relational.core.mapping.Table;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "country")
 @Repository
 public class Country {
 
+    @javax.persistence.Id
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY )
     private int country_id;

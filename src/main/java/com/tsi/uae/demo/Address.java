@@ -1,7 +1,9 @@
 package com.tsi.uae.demo;
 
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.Table;
+//import org.springframework.data.relational.core.mapping.Table;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 
@@ -13,6 +15,7 @@ import java.sql.Blob;
 @Repository
 public class Address {
 
+    @javax.persistence.Id
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY )
     private int address_id;
@@ -27,7 +30,9 @@ public class Address {
     private City city;
     private int postal_code;
     @Nullable
-    private int phone;
+    private long phone;
+    @Lob
+    @JsonIgnore
     @Nullable
     private Blob location;
 
@@ -95,11 +100,11 @@ public class Address {
         this.postal_code = postal_code;
     }
 
-    public int getPhone() {
+    public long getPhone() {
         return phone;
     }
 
-    public void setPhone(int phone) {
+    public void setPhone(long phone) {
         this.phone = phone;
     }
 

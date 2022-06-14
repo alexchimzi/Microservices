@@ -53,7 +53,7 @@ public class MicroserviceApplication {
 		return true;
 
 	}
-	@PostMapping("/Add_Actor")
+	@PostMapping("/Add_Actor2")
 	public Boolean addActor(@RequestParam int Id, String first_name,  String last_name){
 
 		Actor a = new Actor(1,first_name,last_name);
