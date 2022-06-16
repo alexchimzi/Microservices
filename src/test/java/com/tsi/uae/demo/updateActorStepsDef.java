@@ -20,6 +20,7 @@ public class updateActorStepsDef {
     CountryRepository countryRepository;
     CityRepository cityRepository;
     AddressRepository addressRepository;
+    CustomerRepository customerRepository;
 
     String actualFirstName;
     String actualLastName;
@@ -34,7 +35,9 @@ public class updateActorStepsDef {
     public void i_update_actor_information_on_table() {
         actorRepository = mock(ActorRepository.class);
         pa = new MicroserviceApplication(actorRepository,cityRepository,
-                countryRepository,addressRepository);
+                countryRepository,
+                addressRepository,
+                customerRepository);
 
         Actor c = new Actor(first_name,last_name);
         Optional<Actor> optionalActor = Optional.of(c);

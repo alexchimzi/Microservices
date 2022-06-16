@@ -5,8 +5,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.Optional;
 
 @SpringBootApplication
@@ -21,19 +24,28 @@ public class MicroserviceApplication {
 	private CountryRepository countryRepository;
 
 	@Autowired
+	private CustomerRepository customerRepository;
+
+	@Autowired
 	private AddressRepository addressRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(MicroserviceApplication.class, args);
 	}
 
-	public MicroserviceApplication(ActorRepository actorRepository,CityRepository cityRepository,CountryRepository countryRepository,AddressRepository addressRepository){
+	public MicroserviceApplication(ActorRepository actorRepository,
+								   CityRepository cityRepository,
+								   CountryRepository countryRepository,
+								   AddressRepository addressRepository,
+								   CustomerRepository customerRepository){
 
 		this.actorRepository = actorRepository;
 		this.cityRepository = cityRepository;
 		this.countryRepository = countryRepository;
 		this.addressRepository = addressRepository;
+		this.customerRepository = customerRepository;
 	}
+	@CrossOrigin
 	@GetMapping("/Get_All_Actors")
 	public @ResponseBody Iterable<Actor>getAllActors(){
 		//System.out.println(actorRepository.toString());
@@ -193,6 +205,65 @@ public class MicroserviceApplication {
 		a.setPhone(phone);
 		a.setLocation(location);
 		addressRepository.save(a);
+		return true;
+	}
+	// Customer
+
+	@GetMapping("/Get_All_Customer")
+	public @ResponseBody Iterable<Customer>getAllCustomer(){
+		return customerRepository.findAll();
+	}
+	@GetMapping("/Get_Customer_By_Id")
+	public @ResponseBody Optional<Customer> getCustomerById(@RequestParam int Id){
+
+		return customerRepository.findById(Id);
+	}
+	@PostMapping("/Add_Customer")
+	public Boolean addCustomer(@RequestParam String first_name, String last_name, int address_id,
+							   int store_id, String email, int active,
+							   LocalDateTime create_date){
+
+		Customer customer = new Customer(1,first_name,last_name,email,null,active,null);
+		//customer.setFirst_name(first_name);
+		//customer.setLast_name(last_name);
+		//customer.setAddress(address);
+		//customer.getAddress().setAddress_id(address_id);
+		//customer.setAddress(address_id);
+		//customer.setAddress();
+		//customer.setEmail(email);
+		//customer.setCreate_date(create_date);
+		//customer.setActive(active);
+		//customer.setStore_id(store_id);
+
+		customerRepository.save(customer);
+
+		return true;
+
+	}
+	@DeleteMapping("/Delete_Customer")
+	public Boolean removeCustomerById(@RequestParam int id){
+		Customer customer = customerRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("Address not found for this ID :: " + id));
+		customerRepository.delete(customer);
+		return true;
+	}
+	@PutMapping("/Update_Customer")
+	public Boolean updateCustomerById(@RequestParam int id,String first_name, String last_name,
+									  int address_id,
+									  int store_id, String email, int active,
+									  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime create_date){
+
+		Customer customer = customerRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException(" Cannot find  Id"+ id));
+		customer.setFirst_name(first_name);
+		customer.setLast_name(last_name);
+		//customer.setAddress(address);
+		//customer.getAddress().setAddress_id(address_id);
+		customer.setEmail(email);
+		customer.setCreate_date(create_date);
+		customer.setActive(active);
+		customer.setStore_id(store_id);
+		customerRepository.save(customer);
 		return true;
 	}
 }

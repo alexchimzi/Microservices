@@ -13,6 +13,9 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.Optional;
 
 import static org.mockito.Mockito.verify;
@@ -32,11 +35,15 @@ public class MockitoTest {
     @Mock
     private AddressRepository addressRepository;
 
+    @Mock
+    private CustomerRepository customerRepository;
 
     @BeforeEach
     void setup(){
         microserviceApplication = new MicroserviceApplication(actorRepository,cityRepository,
-                countryRepository,addressRepository);
+                countryRepository,
+                addressRepository,
+                customerRepository);
     }
 
     @Test
@@ -298,6 +305,88 @@ public class MockitoTest {
         addressRepository.deleteById(1);
         verify(addressRepository).deleteById(1);
         Assertions.assertTrue(microserviceApplication.removeAddressById(1));
+
+    }
+
+    //Customer Tests
+    @Test
+    public void canGetAllCustomer()
+    {
+        microserviceApplication.getAllCustomer();
+        verify(customerRepository).findAll();
+    }
+    @Test
+    public void canGetCustomerById()
+    {
+
+        Customer customer = new Customer();
+        Address add = new Address(1,"TESING");
+
+        customer.setAddress(add);
+        customer.setFirst_name("TESTING");
+        customer.setLast_name("last_name");
+        //customer.setAddress(address);
+        customer.setEmail("email");
+        customer.setCreate_date(LocalDateTime.of(2022,06,16,12,30));
+        customer.setActive(1);
+        customer.setStore_id(1);
+
+
+
+
+        Mockito.when(microserviceApplication.getCustomerById(1)).thenReturn(Optional.of(customer));
+        Optional<Customer> a = microserviceApplication.getCustomerById(1);
+
+        Assertions.assertEquals("TESTING",a.get().getFirst_name());
+        Assertions.assertEquals("last_name",a.get().getLast_name());
+        Assertions.assertEquals("email",a.get().getEmail());
+        Assertions.assertEquals(1,a.get().getAddress().getAddress_id());
+        Assertions.assertEquals(1,a.get().getActive());
+        Assertions.assertEquals(1,a.get().getStore_id());
+        Assertions.assertEquals(LocalDateTime.of(2022,06,16,12,30),a.get().getCreate_date());
+
+
+    }
+    @Test
+    public void canAddCustomer()
+    {
+        microserviceApplication.addCustomer("TESTING","TEST",1,1,"EMAIL",1,null);
+        ArgumentCaptor<Customer> customerArgumentCaptor
+                = ArgumentCaptor.forClass(Customer.class);
+
+        verify(customerRepository).save(customerArgumentCaptor.capture());
+        Customer customer = customerArgumentCaptor.getValue();
+        Assertions.assertEquals(customer.getFirst_name(),"TESTING","Incorrect Name");
+
+    }
+    @Test
+    public void canUpdateCustomer()
+    {
+        Customer customer = new Customer();
+        microserviceApplication.addCustomer("TESTING","TEST",1,1,"EMAIL",1,null);
+
+        Mockito.when(microserviceApplication.getCustomerById(1)).thenReturn(Optional.of(customer));
+        microserviceApplication.updateCustomerById(1,"TEST","TESTING",1,1,"email",1,null);
+        Customer c = microserviceApplication.getCustomerById(1).orElseThrow();
+
+        Assertions.assertEquals("TEST",c.getFirst_name());
+        Assertions.assertEquals(1,c.getStore_id());
+        Assertions.assertEquals("TESTING",c.getLast_name());
+
+
+
+    }
+
+    @Test
+    public void canDeleteCustomer()
+    {
+        Customer c = new Customer();
+
+        Optional<Customer> optionalCustomer = Optional.of(c);
+        Mockito.when(customerRepository.findById(1)).thenReturn(optionalCustomer);
+        customerRepository.deleteById(1);
+        verify(customerRepository).deleteById(1);
+        Assertions.assertTrue(microserviceApplication.removeCustomerById(1));
 
     }
 }
