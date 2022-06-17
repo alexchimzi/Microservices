@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Optional;
+@CrossOrigin(origins = "http://localhost:3000")
 
 @SpringBootApplication
 @RestController
@@ -47,7 +48,7 @@ public class MicroserviceApplication {
 		this.addressRepository = addressRepository;
 		this.customerRepository = customerRepository;
 	}
-	@CrossOrigin
+	//@CrossOrigin
 	@GetMapping("/Get_All_Actors")
 	public @ResponseBody Iterable<Actor>getAllActors(){
 		//System.out.println(actorRepository.toString());
