@@ -42,7 +42,7 @@ public class updateActorStepsDef {
         Actor c = new Actor(first_name,last_name);
         Optional<Actor> optionalActor = Optional.of(c);
         Mockito.when(actorRepository.findById(1)).thenReturn(optionalActor);
-        pa.addActor(1,optionalActor.get().getFirst_name(),
+        pa.addActor(optionalActor.get().getFirst_name(),
                 optionalActor.get().getLast_name());
 
         pa.updateActorById(1,actualFirstName,actualLastName);

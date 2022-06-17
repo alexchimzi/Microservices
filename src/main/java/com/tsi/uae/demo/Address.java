@@ -46,8 +46,7 @@ public class Address {
         this.postal_code = postal_code;
     }
 
-    public Address(int address_id, String address) {
-        this.address_id = address_id;
+    public Address( String address) {
         this.address = address;
     }
 

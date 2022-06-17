@@ -8,7 +8,9 @@ import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Optional;
 
@@ -52,8 +54,8 @@ public class MicroserviceApplication {
 		return actorRepository.findAll();
 	}
 	@GetMapping("/Get_Actor_By_Id")
-	public @ResponseBody Optional<Actor> getActorId(@RequestParam int Id){
-		return actorRepository.findById(Id);
+	public @ResponseBody Optional<Actor> getActorId(@RequestParam int id){
+		return actorRepository.findById(id);
 	}
 	@PostMapping("/Add_Actor")
 	public Boolean addActor(@RequestParam String first_name,  String last_name){
@@ -65,21 +67,13 @@ public class MicroserviceApplication {
 		return true;
 
 	}
-	@PostMapping("/Add_Actor2")
-	public Boolean addActor(@RequestParam int Id, String first_name,  String last_name){
 
-		Actor a = new Actor(1,first_name,last_name);
-
-		actorRepository.save(a);
-
-		return true;
-
-	}
 
 
 	@DeleteMapping("/Delete_Actor")
-	public Boolean removeActorById(@RequestParam int Id){
-		Actor a = actorRepository.findById(Id).orElseThrow(() -> new ResourceNotFoundException("Actor not found for this ID :: " + Id));
+	public Boolean removeActorById(@RequestParam int id){
+		Actor a = actorRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("Actor not found for this ID :: " + id));
 		actorRepository.delete(a);
 		return true;
 	}
@@ -101,9 +95,9 @@ public class MicroserviceApplication {
 		return cityRepository.findAll();
 	}
 	@GetMapping("/Get_City_By_Id")
-	public @ResponseBody Optional<City> getCityId(@RequestParam int Id){
+	public @ResponseBody Optional<City> getCityId(@RequestParam int id){
 
-		return cityRepository.findById(Id);
+		return cityRepository.findById(id);
 	}
 	@PostMapping("/Add_City")
 	public Boolean addCity(@RequestParam String cityName){
@@ -116,15 +110,16 @@ public class MicroserviceApplication {
 
 	}
 	@DeleteMapping("/Delete_City")
-	public Boolean removeCityById(@RequestParam int Id){
-		City c = cityRepository.findById(Id).orElseThrow(() -> new ResourceNotFoundException("Actor not found for this ID :: " + Id));
+	public Boolean removeCityById(@RequestParam int id){
+		City c = cityRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("City not found for this ID :: " + id));
 		cityRepository.delete(c);
 		return true;
 	}
 	@PutMapping("/Update_City")
 	public Boolean updateCityById(@RequestParam Integer id, String cityName){
 
-		City c = cityRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(" Cannot find  Id"+ id));
+		City c = cityRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException(" Cannot find  Id"+ id));
 		c.setCity(cityName);
 		cityRepository.save(c);
 		return true;
@@ -136,9 +131,9 @@ public class MicroserviceApplication {
 		return countryRepository.findAll();
 	}
 	@GetMapping("/Get_Country_By_Id")
-	public @ResponseBody Optional<Country> getCountryById(@RequestParam int Id){
+	public @ResponseBody Optional<Country> getCountryById(@RequestParam int id){
 
-		return countryRepository.findById(Id);
+		return countryRepository.findById(id);
 	}
 	@PostMapping("/Add_Country")
 	public Boolean addCountry(@RequestParam String countryName){
@@ -151,8 +146,9 @@ public class MicroserviceApplication {
 
 	}
 	@DeleteMapping("/Delete_Country")
-	public Boolean removeCountryById(@RequestParam int Id){
-		Country c = countryRepository.findById(Id).orElseThrow(() -> new ResourceNotFoundException("Actor not found for this ID :: " + Id));
+	public Boolean removeCountryById(@RequestParam int id){
+		Country c = countryRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("Country not found for this ID :: " + id));
 		countryRepository.delete(c);
 		return true;
 	}
@@ -172,14 +168,14 @@ public class MicroserviceApplication {
 		return addressRepository.findAll();
 	}
 	@GetMapping("/Get_Address_By_Id")
-	public @ResponseBody Optional<Address> getAddressById(@RequestParam int Id){
+	public @ResponseBody Optional<Address> getAddressById(@RequestParam int id){
 
-		return addressRepository.findById(Id);
+		return addressRepository.findById(id);
 	}
 	@PostMapping("/Add_Address")
-	public Boolean addAddress(@RequestParam int id, String address){
+	public Boolean addAddress(@RequestParam String address){
 
-		Address a = new Address(id,address);
+		Address a = new Address(address);
 
 		addressRepository.save(a);
 
@@ -187,8 +183,9 @@ public class MicroserviceApplication {
 
 	}
 	@DeleteMapping("/Delete_Address")
-	public Boolean removeAddressById(@RequestParam int Id){
-		Address a = addressRepository.findById(Id).orElseThrow(() -> new ResourceNotFoundException("Address not found for this ID :: " + Id));
+	public Boolean removeAddressById(@RequestParam int id){
+		Address a = addressRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("Address not found for this ID :: " + id));
 		addressRepository.delete(a);
 		return true;
 	}
@@ -221,19 +218,11 @@ public class MicroserviceApplication {
 	@PostMapping("/Add_Customer")
 	public Boolean addCustomer(@RequestParam String first_name, String last_name, int address_id,
 							   int store_id, String email, int active,
-							   LocalDateTime create_date){
+							   String create_date){
 
 		Customer customer = new Customer(1,first_name,last_name,email,null,active,null);
-		//customer.setFirst_name(first_name);
-		//customer.setLast_name(last_name);
-		//customer.setAddress(address);
-		//customer.getAddress().setAddress_id(address_id);
-		//customer.setAddress(address_id);
-		//customer.setAddress();
-		//customer.setEmail(email);
-		//customer.setCreate_date(create_date);
-		//customer.setActive(active);
-		//customer.setStore_id(store_id);
+		DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+		customer.setCreate_date(LocalDate.parse(create_date,df));
 
 		customerRepository.save(customer);
 
@@ -243,7 +232,7 @@ public class MicroserviceApplication {
 	@DeleteMapping("/Delete_Customer")
 	public Boolean removeCustomerById(@RequestParam int id){
 		Customer customer = customerRepository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException("Address not found for this ID :: " + id));
+				.orElseThrow(() -> new ResourceNotFoundException("Customer not found for this ID :: " + id));
 		customerRepository.delete(customer);
 		return true;
 	}
@@ -251,7 +240,8 @@ public class MicroserviceApplication {
 	public Boolean updateCustomerById(@RequestParam int id,String first_name, String last_name,
 									  int address_id,
 									  int store_id, String email, int active,
-									  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime create_date){
+									  String create_date){
+		DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy/MM/dd");
 
 		Customer customer = customerRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException(" Cannot find  Id"+ id));
@@ -260,9 +250,10 @@ public class MicroserviceApplication {
 		//customer.setAddress(address);
 		//customer.getAddress().setAddress_id(address_id);
 		customer.setEmail(email);
-		customer.setCreate_date(create_date);
+		//customer.setCreate_date(create_date);
 		customer.setActive(active);
 		customer.setStore_id(store_id);
+		customer.setCreate_date(LocalDate.parse(create_date,df));
 		customerRepository.save(customer);
 		return true;
 	}

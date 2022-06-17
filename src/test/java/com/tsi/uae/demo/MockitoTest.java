@@ -265,7 +265,7 @@ public class MockitoTest {
     @Test
     public void canAddAddress()
     {
-        microserviceApplication.addAddress(1,"TESTING");
+        microserviceApplication.addAddress("TESTING");
         ArgumentCaptor<Address> addressArgumentCaptor
                 = ArgumentCaptor.forClass(Address.class);
 
@@ -298,7 +298,7 @@ public class MockitoTest {
     @Test
     public void canDeleteAddress()
     {
-        Address a = new Address(1,"TEST");
+        Address a = new Address("TEST");
 
         Optional<Address> optionalAddress = Optional.of(a);
         Mockito.when(addressRepository.findById(1)).thenReturn(optionalAddress);
@@ -320,14 +320,14 @@ public class MockitoTest {
     {
 
         Customer customer = new Customer();
-        Address add = new Address(1,"TESING");
+        Address add = new Address("TESTING");
 
         customer.setAddress(add);
         customer.setFirst_name("TESTING");
         customer.setLast_name("last_name");
         //customer.setAddress(address);
         customer.setEmail("email");
-        customer.setCreate_date(LocalDateTime.of(2022,06,16,12,30));
+        customer.setCreate_date(LocalDate.of(2022,06,16));
         customer.setActive(1);
         customer.setStore_id(1);
 
@@ -340,17 +340,17 @@ public class MockitoTest {
         Assertions.assertEquals("TESTING",a.get().getFirst_name());
         Assertions.assertEquals("last_name",a.get().getLast_name());
         Assertions.assertEquals("email",a.get().getEmail());
-        Assertions.assertEquals(1,a.get().getAddress().getAddress_id());
+        Assertions.assertEquals("TESTING",a.get().getAddress().getAddress());
         Assertions.assertEquals(1,a.get().getActive());
         Assertions.assertEquals(1,a.get().getStore_id());
-        Assertions.assertEquals(LocalDateTime.of(2022,06,16,12,30),a.get().getCreate_date());
+        Assertions.assertEquals(LocalDate.of(2022,06,16),a.get().getCreate_date());
 
 
     }
     @Test
     public void canAddCustomer()
     {
-        microserviceApplication.addCustomer("TESTING","TEST",1,1,"EMAIL",1,null);
+        microserviceApplication.addCustomer("TESTING","TEST",1,1,"EMAIL",1,"2022/06/16");
         ArgumentCaptor<Customer> customerArgumentCaptor
                 = ArgumentCaptor.forClass(Customer.class);
 
@@ -363,10 +363,10 @@ public class MockitoTest {
     public void canUpdateCustomer()
     {
         Customer customer = new Customer();
-        microserviceApplication.addCustomer("TESTING","TEST",1,1,"EMAIL",1,null);
+        microserviceApplication.addCustomer("TESTING","TEST",1,1,"EMAIL",1,"2022/06/16");
 
         Mockito.when(microserviceApplication.getCustomerById(1)).thenReturn(Optional.of(customer));
-        microserviceApplication.updateCustomerById(1,"TEST","TESTING",1,1,"email",1,null);
+        microserviceApplication.updateCustomerById(1,"TEST","TESTING",1,1,"email",1,"2022/06/16");
         Customer c = microserviceApplication.getCustomerById(1).orElseThrow();
 
         Assertions.assertEquals("TEST",c.getFirst_name());

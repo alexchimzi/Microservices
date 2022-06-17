@@ -7,6 +7,7 @@ import javax.persistence.*;
 
 import org.springframework.data.annotation.Id;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 
@@ -34,12 +35,12 @@ Customer {
 
     private int active;
 
-    private LocalDateTime create_date;
+    private LocalDate create_date;
 
     public Customer() {
     }
 
-    public Customer( int store_id, String first_name, String last_name, String email, Address address, int active, LocalDateTime create_date) {
+    public Customer( int store_id, String first_name, String last_name, String email, Address address, int active, LocalDate create_date) {
 
         this.store_id = store_id;
         this.first_name = first_name;
@@ -106,11 +107,11 @@ Customer {
         this.active = active;
     }
 
-    public LocalDateTime getCreate_date() {
+    public LocalDate getCreate_date() {
         return create_date;
     }
 
-    public void setCreate_date(LocalDateTime create_date) {
+    public void setCreate_date(LocalDate create_date) {
         this.create_date = create_date;
     }
 
