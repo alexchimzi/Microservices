@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Optional;
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*")
 
 @SpringBootApplication
 @RestController
@@ -206,6 +206,7 @@ public class MicroserviceApplication {
 		return true;
 	}
 	// Customer
+
 
 	@GetMapping("/Get_All_Customer")
 	public @ResponseBody Iterable<Customer>getAllCustomer(){
